@@ -16,12 +16,13 @@ if (!defined('PASSWORD_DEFAULT')) {
      * Hash the password using the specified algorithm
      *
      * @param string $password The password to hash
-     * @param int    $algo     The algorithm to use (Defined by PASSWORD_* constants)
-     * @param array  $options  The options for the algorithm to use
+     * @param int $algo The algorithm to use (Defined by PASSWORD_* constants)
+     * @param array $options The options for the algorithm to use
      *
      * @return string|false The hashed password, or false on error.
      */
-    function password_hash($password, $algo, array $options = array()) {
+    function password_hash($password, $algo, array $options = array())
+    {
         if (!function_exists('crypt')) {
             trigger_error("Crypt must be loaded for password_hash to function", E_USER_WARNING);
             return null;
@@ -62,11 +63,11 @@ if (!defined('PASSWORD_DEFAULT')) {
                 case 'integer':
                 case 'double':
                 case 'string':
-                    $salt = (string) $options['salt'];
+                $salt = (string)$options['salt'];
                     break;
                 case 'object':
                     if (method_exists($options['salt'], '__tostring')) {
-                        $salt = (string) $options['salt'];
+                        $salt = (string)$options['salt'];
                         break;
                     }
                 case 'array':
@@ -149,7 +150,8 @@ if (!defined('PASSWORD_DEFAULT')) {
      *
      * @return array The array of information about the hash.
      */
-    function password_get_info($hash) {
+    function password_get_info($hash)
+    {
         $return = array(
             'algo' => 0,
             'algoName' => 'unknown',
@@ -169,13 +171,14 @@ if (!defined('PASSWORD_DEFAULT')) {
      *
      * If the answer is true, after validating the password using password_verify, rehash it.
      *
-     * @param string $hash    The hash to test
-     * @param int    $algo    The algorithm used for new password hashes
-     * @param array  $options The options array passed to password_hash
+     * @param string $hash The hash to test
+     * @param int $algo The algorithm used for new password hashes
+     * @param array $options The options array passed to password_hash
      *
      * @return boolean True if the password needs to be rehashed.
      */
-    function password_needs_rehash($hash, $algo, array $options = array()) {
+    function password_needs_rehash($hash, $algo, array $options = array())
+    {
         $info = password_get_info($hash);
         if ($info['algo'] != $algo) {
             return true;
@@ -195,11 +198,12 @@ if (!defined('PASSWORD_DEFAULT')) {
      * Verify a password against a hash using a timing attack resistant approach
      *
      * @param string $password The password to verify
-     * @param string $hash     The hash to verify against
+     * @param string $hash The hash to verify against
      *
      * @return boolean If the password matches the hash
      */
-    function password_verify($password, $hash) {
+    function password_verify($password, $hash)
+    {
         if (!function_exists('crypt')) {
             trigger_error("Crypt must be loaded for password_verify to function", E_USER_WARNING);
             return false;

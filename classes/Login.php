@@ -7,10 +7,6 @@
 class Login
 {
     /**
-     * @var object The database connection
-     */
-    private $db_connection = null;
-    /**
      * @var array Collection of error messages
      */
     public $errors = array();
@@ -18,6 +14,10 @@ class Login
      * @var array Collection of success / neutral messages
      */
     public $messages = array();
+    /**
+     * @var object The database connection
+     */
+    private $db_connection = null;
 
     /**
      * the function "__construct()" automatically starts whenever an object of this class is created,
@@ -32,11 +32,23 @@ class Login
         // if user tried to log out (happen when user clicks logout button)
         if (isset($_GET["logout"])) {
             $this->doLogout();
-        }
-        // login via post data (if user just submitted a login form)
+        } // login via post data (if user just submitted a login form)
         elseif (isset($_POST["login"])) {
             $this->dologinWithPostData();
         }
+    }
+
+    /**
+     * perform the logout
+     */
+    public function doLogout()
+    {
+        // delete the session of the user
+        $_SESSION = array();
+        session_destroy();
+        // return a little feeedback message
+        $this->messages[] = "You have been logged out.";
+
     }
 
     /**
@@ -100,25 +112,12 @@ class Login
     }
 
     /**
-     * perform the logout
-     */
-    public function doLogout()
-    {
-        // delete the session of the user
-        $_SESSION = array();
-        session_destroy();
-        // return a little feeedback message
-        $this->messages[] = "You have been logged out.";
-
-    }
-
-    /**
      * simply return the current state of the user's login
      * @return boolean user's login status
      */
     public function isUserLoggedIn()
     {
-        if (isset($_SESSION['user_login_status']) AND $_SESSION['user_login_status'] == 1) {
+        if (isset($_SESSION['user_login_status']) && $_SESSION['user_login_status'] == 1) {
             return true;
         }
         // default return

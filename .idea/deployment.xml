@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" autoUpload="Always" serverName="XAMPP Apache" uploadOnCheckin="813afff4-8e0d-4576-9452-cfe8769046b9">
+    <serverData>
+      <paths name="XAMPP Apache">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
+    <option name="myUploadOnCheckinName" value="The Pro Host" />
+    <option name="myAutoUpload" value="ALWAYS" />
+  </component>
+</project>

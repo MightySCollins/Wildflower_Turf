@@ -7,10 +7,6 @@
 class Registration
 {
     /**
-     * @var object $db_connection The database connection
-     */
-    private $db_connection = null;
-    /**
      * @var array $errors Collection of error messages
      */
     public $errors = array();
@@ -18,6 +14,10 @@ class Registration
      * @var array $messages Collection of success / neutral messages
      */
     public $messages = array();
+    /**
+     * @var object $db_connection The database connection
+     */
+    private $db_connection = null;
 
     /**
      * the function "__construct()" automatically starts whenever an object of this class is created,

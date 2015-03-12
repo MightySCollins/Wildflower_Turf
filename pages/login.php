@@ -47,7 +47,9 @@
                 </div>
                 <div class="panel-body">
                     <?php
-                    if (!REGISTER) echo '<div class=\'alert alert-warning\'>Registration is currently <strong>closed</strong></div>';
+                    if (!REGISTER) {
+                        echo '<div class=\'alert alert-warning\'>Registration is currently <strong>closed</strong></div>';
+                    }
 
                     if (isset($login)) {
                         if ($login->errors) {
@@ -75,7 +77,10 @@
                             </div>
                             <input type="submit" class="btn btn-lg btn-success btn-block" name="login" value="Login"/>
                         </fieldset>
-                        <?php if (REGISTER) echo '<br><a class="btn btn-primary" href="register.php">Register Now</a>'; ?>
+                        <?php if (REGISTER) {
+    echo '<br><a class="btn btn-primary" href="register.php">Register Now</a>';
+}
+?>
                     </form>
                 </div>
             </div>

@@ -11,3 +11,5 @@ First code version
 [Added] Changelog
 
 ###Feature branches
+####F001
+[Added] Username sanitizing

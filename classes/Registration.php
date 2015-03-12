@@ -36,7 +36,8 @@ class Registration
      */
     private function registerNewUser()
     {
-        if (empty($_POST['user_name'])) {
+        $user_name = filter_var($_POST['user_name'], FILTER_SANITIZE_STRING);
+        if (empty($user_name)) {
             $this->errors[] = "Empty Username";
         } elseif (empty($_POST['user_password_new']) || empty($_POST['user_password_repeat'])) {
             $this->errors[] = "Empty Password";
@@ -44,9 +45,9 @@ class Registration
             $this->errors[] = "Password and password repeat are not the same";
         } elseif (strlen($_POST['user_password_new']) < 6) {
             $this->errors[] = "Password has a minimum length of 6 characters";
-        } elseif (strlen($_POST['user_name']) > 64 || strlen($_POST['user_name']) < 2) {
+        } elseif (strlen($user_name) > 64 || strlen($user_name) < 2) {
             $this->errors[] = "Username cannot be shorter than 2 or longer than 64 characters";
-        } elseif (!preg_match('/^[a-z\d]{2,64}$/i', $_POST['user_name'])) {
+        } elseif (!preg_match('/^[a-z\d]{2,64}$/i', $user_name)) {
             $this->errors[] = "Username does not fit the name scheme: only a-Z and numbers are allowed, 2 to 64 characters";
         } elseif (empty($_POST['user_email'])) {
             $this->errors[] = "Email cannot be empty";
@@ -54,9 +55,9 @@ class Registration
             $this->errors[] = "Email cannot be longer than 64 characters";
         } elseif (!filter_var($_POST['user_email'], FILTER_VALIDATE_EMAIL)) {
             $this->errors[] = "Your email address is not in a valid email format";
-        } elseif (!empty($_POST['user_name'])
-            && strlen($_POST['user_name']) <= 64
-            && strlen($_POST['user_name']) >= 2
+        } elseif (!empty($user_name)
+            && strlen($user_name) <= 64
+            && strlen($user_name) >= 2
             && preg_match('/^[a-z\d]{2,64}$/i', $_POST['user_name'])
             && !empty($_POST['user_email'])
             && strlen($_POST['user_email']) <= 64

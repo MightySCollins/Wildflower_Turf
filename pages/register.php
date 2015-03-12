@@ -47,7 +47,9 @@
                 </div>
                 <div class="panel-body">
                     <?php
-                    if (!REGISTER) echo '<div class=\'alert alert-warning\'>Registration is currently <strong>closed</strong></div>';
+                    if (!REGISTER) {
+                        echo '<div class=\'alert alert-warning\'>Registration is currently <strong>closed</strong></div>';
+                    }
 
                     if (isset($registration)) {
                         if ($registration->errors) {

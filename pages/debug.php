@@ -7,9 +7,13 @@
             if (DEV_MODE) {
                 function trueFalse($const)
                 {
-                    if ($const == 0) return "False";
-                    elseif ($const == 1) return "True";
-                    else echo $const;
+                    if ($const == 0) {
+                        return "False";
+                    } elseif ($const == 1) {
+                        return "True";
+                    } else {
+                        echo $const;
+                    }
                 }
 
                 echo "<h4>Session Info</h4>";
@@ -18,8 +22,9 @@
                     echo "<br>Logged in: ";
                     trueFalse($_SESSION['user_login_status']);
                 } else {
-                    foreach ($_SESSION as $key => $val)
-                        echo $key . " " . $val . "<br>";
+                    foreach ($_SESSION as $key => $val) {
+                                            echo $key . " " . $val . "<br>";
+                    }
                     echo '<form method="post" action="debug.php">
                                 <input class="btn btn-danger" type="submit" name="destroy" value="destroy"/>Warning: This will log you out
                             </form>';
@@ -71,7 +76,9 @@
                     echo "<h4>PHP Info</h4>";
                     phpinfo();
                 }
-            } else echo '<div class="alert alert-danger">Please enable "DEV_MODE" in the config options</div>';
+            } else {
+                echo '<div class="alert alert-danger">Please enable "DEV_MODE" in the config options</div>';
+            }
             ?>
 
         </div>

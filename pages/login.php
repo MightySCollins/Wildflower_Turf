@@ -62,15 +62,15 @@
                         }
                     }
                     ?>
-                    <form role="form">
+                    <form method="post" action="index.php" name="loginform">
                         <fieldset>
                             <div class="form-group">
-                                <input class="form-control" id="login_input_username" placeholder="Username"
-                                       name="username" type="text" autofocus>
+                                <input class="form-control" id="login_input_username" placeholder="Username or Email"
+                                       name="user_name" type="text" autofocus>
                             </div>
                             <div class="form-group">
                                 <input class="form-control" id="login_input_password" placeholder="Password"
-                                       name="password" type="password"
+                                       name="user_password" type="password"
                                        value="">
                             </div>
                             <input type="submit" class="btn btn-lg btn-success btn-block" name="login" value="Login"/>

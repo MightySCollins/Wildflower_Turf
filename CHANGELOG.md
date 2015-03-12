@@ -12,4 +12,6 @@ First code version
 
 ###Feature branches
 ####F001
-[Added] Username sanitizing
+1 - [Added] Username sanitizing
+2 - [Added] All sanitizing
+2 - [Fixed] Email 'must not be blank'

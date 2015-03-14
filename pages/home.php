@@ -11,17 +11,33 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
-                        <i class="fa fa-comments fa-5x"></i>
+                        <i class="fa fa-leaf fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge">26</div>
-                        <div>New Comments!</div>
+                        <div class="huge">
+                            <?php
+                            $db_connection = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+                            if (!$db_connection->set_charset("utf8")) {
+                                $errors[] = $db_connection->error;
+                            }
+
+                            if (!$db_connection->connect_errno) {
+                                $sql = "SELECT location
+                                    FROM plants;";
+                                $result_of_login_check = $db_connection->query($sql);
+
+                                $total_plants = $result_of_login_check->num_rows;
+                                echo $total_plants;
+                            }
+                            ?>
+                        </div>
+                        <div>Plants Added</div>
                     </div>
                 </div>
             </div>
-            <a href="#">
+            <a href="plants.php">
                 <div class="panel-footer">
-                    <span class="pull-left">View Details</span>
+                    <span class="pull-left">View All</span>
                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
 
                     <div class="clearfix"></div>
@@ -34,15 +50,32 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
-                        <i class="fa fa-tasks fa-5x"></i>
+                        <i class="fa fa-clock-o fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge">12</div>
-                        <div>New Tasks!</div>
+                        <div class="huge">
+                            <?php
+                            $db_connection = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+                            if (!$db_connection->set_charset("utf8")) {
+                                $errors[] = $db_connection->error;
+                            }
+
+                            if (!$db_connection->connect_errno) {
+                                $sql = "SELECT location
+                                    FROM plants
+                                    WHERE available='Now';";
+                                $result_of_login_check = $db_connection->query($sql);
+
+                                $ready_plants = $result_of_login_check->num_rows;
+                                echo $ready_plants;
+                            }
+                            ?>
+                        </div>
+                        <div>Ready Now</div>
                     </div>
                 </div>
             </div>
-            <a href="#">
+            <a href="plants.php?view=ready"> <!-- todo: add plants views -->
                 <div class="panel-footer">
                     <span class="pull-left">View Details</span>
                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -57,15 +90,17 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
-                        <i class="fa fa-shopping-cart fa-5x"></i>
+                        <i class="fa fa-calendar fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge">124</div>
-                        <div>New Orders!</div>
+                        <div class="huge"><?php
+                            echo $total_plants-$ready_plants;
+                            ?></div>
+                        <div>Not Ready</div>
                     </div>
                 </div>
             </div>
-            <a href="#">
+            <a href="plants.php?view=not_ready">
                 <div class="panel-footer">
                     <span class="pull-left">View Details</span>
                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>

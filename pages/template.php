@@ -110,7 +110,7 @@
     <!-- Page Content -->
     <div id="page-wrapper">
         <div class="container-fluid">
-            <?= include $page ?>
+            <?php include($page) ?>
             <!-- /.row -->
         </div>
         <!-- /.container-fluid -->

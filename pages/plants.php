@@ -7,7 +7,7 @@
                 <tr>
                     <td>Location</td>
                     <td>Product</td>
-                    <td>Player Name</td>
+                    <td>Sown</td>
                     <td>QTY</td>
                     <td>Available</td>
                     <td>Edit</td>
@@ -20,7 +20,10 @@
                     die(mysql_error());
                 }
                 mysql_select_db(DB_NAME);
-                $results = mysql_query("SELECT * FROM plants LIMIT 10");
+                if (empty($_GET['view'])) $results = mysql_query("SELECT * FROM plants");
+                elseif ($_GET['view'] === 'ready') $results = mysql_query("SELECT * FROM plants WHERE available = 'Now' ");
+                elseif ($_GET['view'] === 'not_ready') $results = mysql_query("SELECT * FROM plants WHERE available <> 'Now' ");
+
                 while ($row = mysql_fetch_array($results)) {
                     echo '<tr>
                         <td>' . $row['location'] . '</td>

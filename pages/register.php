@@ -71,7 +71,8 @@
                                        name="user_name" type="text" value="<?php ?>" autofocus>
                             </div>
                             <div class="form-group">
-                                <input class="form-control" id="login_input_email" placeholder="E-mail" name="user_email"
+                                <input class="form-control" id="login_input_email" placeholder="E-mail"
+                                       name="user_email"
                                        type="email" autofocus>
                             </div>
                             <div class="form-group">

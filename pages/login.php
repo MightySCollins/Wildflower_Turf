@@ -78,9 +78,9 @@
                             <input type="submit" class="btn btn-lg btn-success btn-block" name="login" value="Login"/>
                         </fieldset>
                         <?php if (REGISTER) {
-    echo '<br><a class="btn btn-primary" href="register.php">Register Now</a>';
-}
-?>
+                            echo '<br><a class="btn btn-primary" href="register.php">Register Now</a>';
+                        }
+                        ?>
                     </form>
                 </div>
             </div>

@@ -3,7 +3,7 @@ define("COMPANY_NAME", "Wildflower Turf");
 define("REGISTER", true); // if registration is allowed
 
 // Debug Area
-define("ADMIN","SCollins");
+define("ADMIN", "SCollins");
 define("DEV_MODE", true); // set to TRUE for outputting, turn of when published
 define("CLEAN_SESSIONS", false); // Whether you want full output or clean
 define("PHP_INFO", false); // if you want to see full PHP info Todo: Add support for partial PHP

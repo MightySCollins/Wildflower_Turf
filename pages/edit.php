@@ -1,10 +1,3 @@
-<?php
-
-function lookup(location) {
-
-}
-
-?>
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-12">
@@ -31,7 +24,7 @@ function lookup(location) {
                             <?php
                             if (isset($_POST['lookup'])) {
                                 if ($_POST['lookup'] and $_SERVER['REQUEST_METHOD'] == "POST") {
-                                    lookup($_POST['location']);
+                                    //lookup($_POST['location']);
                                     // todo: add lookup script
                                 }
                             }

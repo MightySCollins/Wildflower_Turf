@@ -63,7 +63,7 @@ if (!defined('PASSWORD_DEFAULT')) {
                 case 'integer':
                 case 'double':
                 case 'string':
-                $salt = (string)$options['salt'];
+                    $salt = (string)$options['salt'];
                     break;
                 case 'object':
                     if (method_exists($options['salt'], '__tostring')) {

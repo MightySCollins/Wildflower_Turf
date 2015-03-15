@@ -23,7 +23,7 @@
                     trueFalse($_SESSION['user_login_status']);
                 } else {
                     foreach ($_SESSION as $key => $val) {
-                                            echo $key . " " . $val . "<br>";
+                        echo $key . " " . $val . "<br>";
                     }
                     echo '<form method="post" action="debug.php">
                                 <input class="btn btn-danger" type="submit" name="destroy" value="destroy"/>Warning: This will log you out

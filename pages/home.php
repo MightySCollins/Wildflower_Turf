@@ -128,4 +128,4 @@ if (!$db_connection->connect_errno) {
             </div>
         </div>
     </div>
-<?php } ?>
+<?php }

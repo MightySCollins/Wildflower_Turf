@@ -1,2 +1,2 @@
 <?php
-// a file for global f
+// a file for global functions

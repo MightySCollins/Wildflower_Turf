@@ -26,7 +26,7 @@ class Registration
     public function __construct()
     {
         if (isset($_POST["register"])) {
-            $this->registerNewUser();
+            $this->registerUser();
         }
     }
 
@@ -34,7 +34,7 @@ class Registration
      * handles the entire registration process. checks all error possibilities
      * and creates a new user in the database if everything is fine
      */
-    private function registerNewUser()
+    private function registerUser()
     {
         $user_name = filter_var($_POST['user_name'], FILTER_SANITIZE_STRING);
         $user_email = filter_var($_POST['user_email'], FILTER_SANITIZE_EMAIL);

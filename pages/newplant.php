@@ -1,8 +1,4 @@
 <?php
-if (isset($_POST['lookup'])) $location = $_POST['location'];
-elseif (!empty($_GET['location'])) $location = $_GET['location'];
-else $location = 1;
-
 $connect = mysql_connect(DB_HOST, DB_USER, DB_PASS);
 if (!$connect) die(mysql_error());
 mysql_select_db(DB_NAME);
@@ -13,32 +9,17 @@ if (isset($_POST['save'])) {
     $sown = $_POST['sown'];
     $qty = $_POST['qty'];
     $available = $_POST['available'];
-    $results = mysql_query("UPDATE plants
-                            SET product = '$product', sown = '$sown', qty = '$qty', available = '$available'
-                            WHERE location='$location'");
-} else {
-    $results = mysql_query("SELECT * FROM plants WHERE location =" . $location . ";");
-    if (!mysql_num_rows($results)) {
-        $message = '<div class=\'alert alert-warning\'>The plant cannot be found</div>';
-        $location = 1;
-        $results = mysql_query("SELECT * FROM plants WHERE location =" . $location . ";");
-    }
-
-    while ($row = mysql_fetch_array($results)) {
-        $product = $row['product'];
-        $sown = $row['sown'];
-        $qty = $row['qty'];
-        $available = $row['available'];
-    }
+    $results = mysql_query("INSERT INTO plants
+                            VALUES ('$location', '$product', '$sown', '$qty', '$available')");
 }
 ?>
 
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Edit Plant</h1>
+            <h1 class="page-header">Add Plant</h1>
             <?php if (isset($message)) echo $message ?>
-            <form method="post" action="edit.php" name="plantedit">
+            <form method="post" action="newplant.php" name="plantadd">
                 <fieldset>
                     <div class="form-group">
                         <div class="row">
@@ -46,11 +27,7 @@ if (isset($_POST['save'])) {
                                 <label for="plant_input_location" class="col-sm-2 control-label">Location</label></div>
                             <div class="col-md-4">
                                 <input class="form-control" id="plant_input_location"
-                                       name="location" type="number" value="<?php echo $location ?>">
-                            </div>
-
-                            <div class="col-md-1 col-sm-1">
-                                <input class="btn btn-primary" type="submit" name="lookup" value="Lookup"/>
+                                       name="location" type="number">
                             </div>
                         </div>
                     </div>
@@ -60,7 +37,7 @@ if (isset($_POST['save'])) {
                                 <label for="plant_input_location" class="col-sm-2 control-label">Product</label></div>
                             <div class="col-md-4">
                                 <input class="form-control" id="plant_input_product"
-                                       name="product" type="text" value="<?php echo $product ?>">
+                                       name="product" type="text"">
                             </div>
                         </div>
                     </div>
@@ -70,7 +47,7 @@ if (isset($_POST['save'])) {
                                 <label for="plant_input_sown" class="col-sm-2 control-label">Sown</label></div>
                             <div class="col-md-4">
                                 <input class="form-control" id="plant_input_sown"
-                                       name="sown" type="date" value="<?php echo $sown ?>">
+                                       name="sown" type="date"">
                             </div>
                         </div>
                     </div>
@@ -80,18 +57,17 @@ if (isset($_POST['save'])) {
                                 <label for="plant_input_qty" class="col-sm-2 control-label">QTY</label></div>
                             <div class="col-md-4">
                                 <input class="form-control" id="plant_input_qty"
-                                       name="qty" type="number" value="<?php echo $qty ?>">
+                                       name="qty" type="number"">
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="row">
                             <div class="col-md-2">
-                                <label for="plant_input_available" class="col-sm-2 control-label">Available</label>
-                            </div>
+                                <label for="plant_input_available" class="col-sm-2 control-label">Available</label></div>
                             <div class="col-md-4">
                                 <input class="form-control" id="plant_input_available"
-                                       name="available" type="text" value="<?php echo $available ?>">
+                                       name="available" type="text"">
                             </div>
                         </div>
                     </div>

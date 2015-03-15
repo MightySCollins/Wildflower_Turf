@@ -100,6 +100,9 @@
                         </ul>
                         <!-- /.nav-second-level -->
                     </li>
+                    <li>
+                        <a href="../newplant.php"><i class="fa fa-pencil fa-fw"></i> New Plant</a>
+                    </li>
                 </ul>
             </div>
             <!-- /.sidebar-collapse -->

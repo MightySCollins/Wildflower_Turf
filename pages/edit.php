@@ -1,30 +1,45 @@
 <?php
-if (isset($_POST['lookup']) || isset($_POST['save'])) {
-        $location = $_POST['location'];
-} elseif (!empty($_GET['location']))
-    $location = $_GET['location'];
+if (isset($_POST['lookup'])) $location = $_POST['location'];
+elseif (!empty($_GET['location'])) $location = $_GET['location'];
 else $location = 1;
 
 $connect = mysql_connect(DB_HOST, DB_USER, DB_PASS);
-if (!$connect) {
-    die(mysql_error());
+if (!$connect) die(mysql_error());
+mysql_select_db(DB_NAME);
+
+if (isset($_POST['save'])) {
+    $location = $_POST['location'];
+    $product = $_POST['product'];
+    $sown = $_POST['sown'];
+    $qty = $_POST['qty'];
+    $available = $_POST['available'];
+    $results = mysql_query("UPDATE plants
+                            SET product = '$product', sown = '$sown', qty = '$qty', available = '$available'
+                            WHERE location='$location'");
+
+} else {
+    $results = mysql_query("SELECT * FROM plants WHERE location =" . $location . ";");
+    if (!mysql_num_rows($results)) {
+        $message = '<div class=\'alert alert-warning\'>The plant cannot be found</div>';
+        $location = 1;
+        $results = mysql_query("SELECT * FROM plants WHERE location =" . $location . ";");
+    }
+    while ($row = mysql_fetch_array($results)) {
+        $product = $row['product'];
+        $sown = $row['sown'];
+        $qty = $row['qty'];
+        $available = $row['available'];
+    }
+
 }
 
-mysql_select_db(DB_NAME);
-$results = mysql_query("SELECT * FROM plants WHERE location =" . $location . ";");
-while ($row = mysql_fetch_array($results)) {
-    $product = $row['product'];
-    $sown = $row['sown'];
-    $qty = $row['qty'];
-    $available = $row['available'];
-}
 ?>
 
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-12">
             <h1 class="page-header">Edit Plant</h1>
-
+            <?php if (isset($message)) echo $message ?>
             <form method="post" action="edit.php" name="plantedit">
                 <fieldset>
                     <div class="form-group">
@@ -60,7 +75,7 @@ while ($row = mysql_fetch_array($results)) {
 
                             <div class="col-md-4">
                                 <input class="form-control" id="plant_input_sown"
-                                       name="product" type="date" value="<?php echo $sown ?>">
+                                       name="sown" type="date" value="<?php echo $sown ?>">
                             </div>
                         </div>
                     </div>

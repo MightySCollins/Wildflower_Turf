@@ -1,21 +1,38 @@
 <?php
-if (isset($_POST['lookup'])) $location = $_POST['location'];
+echo $_POST['location'];
+echo $_GET['location'];
+if (isset($_POST['location'])) $location = $_POST['location'];
 elseif (!empty($_GET['location'])) $location = $_GET['location'];
 else $location = 1;
+echo $location;
 
 $connect = mysql_connect(DB_HOST, DB_USER, DB_PASS);
 if (!$connect) die(mysql_error());
 mysql_select_db(DB_NAME);
+//echo $location;
+if (isset($_POST['delete'])) {
+    $results = mysql_query("DELETE FROM plants
+                            WHERE location='$location';");
+}
 
 if (isset($_POST['save'])) {
-    $location = $_POST['location'];
-    $product = $_POST['product'];
+    $product = filter_var($_POST['product'], FILTER_SANITIZE_STRING);
     $sown = $_POST['sown'];
-    $qty = $_POST['qty'];
-    $available = $_POST['available'];
-    $results = mysql_query("UPDATE plants
+    $qty = filter_var($_POST['qty'], FILTER_SANITIZE_NUMBER_INT);
+    $available = filter_var($_POST['available'], FILTER_SANITIZE_STRING);
+    if (!empty($location)
+        && is_numeric($location)
+        && !empty($product)
+        && preg_match('/^[a-zA-Z\d]{0,64}$/i', $product)
+        && !empty($qty)
+        && is_numeric($qty)
+        && !empty($available)
+        && preg_match('/^[a-zA-Z\d]{0,64}$/i', $available)
+    )
+        $results = mysql_query("UPDATE plants
                             SET product = '$product', sown = '$sown', qty = '$qty', available = '$available'
                             WHERE location='$location'");
+    else $message = '<div class=\'alert alert-warning\'>Some inputs are invalid</div>';
 } else {
     $results = mysql_query("SELECT * FROM plants WHERE location =" . $location . ";");
     if (!mysql_num_rows($results)) {
@@ -45,13 +62,9 @@ if (isset($_POST['save'])) {
                             <div class="col-md-2">
                                 <label for="plant_input_location" class="col-sm-2 control-label">Location</label></div>
                             <div class="col-md-4">
-                                <input class="form-control" id="plant_input_location"
-                                       name="location" type="number" value="<?php echo $location ?>">
+                                <?php echo $location;?>
                             </div>
-
-                            <div class="col-md-1 col-sm-1">
-                                <input class="btn btn-primary" type="submit" name="lookup" value="Lookup"/>
-                            </div>
+                            <input type="hidden" name="location" value="<?php echo $location?>">
                         </div>
                     </div>
                     <div class="form-group">
@@ -70,7 +83,7 @@ if (isset($_POST['save'])) {
                                 <label for="plant_input_sown" class="col-sm-2 control-label">Sown</label></div>
                             <div class="col-md-4">
                                 <input class="form-control" id="plant_input_sown"
-                                       name="sown" type="date" value="<?php echo $sown ?>">
+                                       name="sown" type="date" value="<?php echo $sown ?>" required>
                             </div>
                         </div>
                     </div>
@@ -80,7 +93,7 @@ if (isset($_POST['save'])) {
                                 <label for="plant_input_qty" class="col-sm-2 control-label">QTY</label></div>
                             <div class="col-md-4">
                                 <input class="form-control" id="plant_input_qty"
-                                       name="qty" type="number" value="<?php echo $qty ?>">
+                                       name="qty" type="number" value="<?php echo $qty ?>" required>
                             </div>
                         </div>
                     </div>
@@ -91,13 +104,21 @@ if (isset($_POST['save'])) {
                             </div>
                             <div class="col-md-4">
                                 <input class="form-control" id="plant_input_available"
-                                       name="available" type="text" value="<?php echo $available ?>">
+                                       name="available" type="text" value="<?php echo $available ?>" required>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <br>
                         <input type="submit" class="btn btn-lg btn-success btn-block" name="save" value="Save"/>
+                    </div>
+                    <div class="col-md-2 col-sm-4">
+                        <br>
+                        <a href="plants.php" class="btn btn-lg btn-default btn-block" name="cancel">Cancel</a>
+                    </div>
+                    <div class="col-md-2">
+                        <br>
+                        <input type="submit" class="btn btn-lg btn-danger btn-block" name="delete" value="Delete"/>
                     </div>
                 </fieldset>
             </form>

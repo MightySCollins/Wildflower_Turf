@@ -9,17 +9,19 @@ if (isset($_POST['save'])) {
     $sown = $_POST['sown'];
     $qty = filter_var($_POST['qty'], FILTER_SANITIZE_NUMBER_INT);
     $available = filter_var($_POST['available'], FILTER_SANITIZE_STRING);
-    if(!empty($location)
+    if (!empty($location)
         && is_numeric($location)
         && !empty($product)
-        && preg_match('/^[a-z\d]{2,64}$/i', $product)
+        && preg_match('/^[a-zA-Z\d]{0,64}$/i', $product)
         && !empty($qty)
         && is_numeric($qty)
         && !empty($available)
-        && preg_match('/^[a-z\d]{2,64}$/i', $available))
-    $results = mysql_query("INSERT INTO plants
+        && preg_match('/^[a-zA-Z\d]{0,64}$/i', $available)
+    ) {
+        $results = mysql_query("INSERT INTO plants
                             VALUES ('$location', '$product', '$sown', '$qty', '$available')");
-    else $message = '<div class=\'alert alert-warning\'>Some inputs are invalid</div>';
+        $message = '<div class=\'alert alert-success\'>Plant added</div>';
+    } else $message = '<div class=\'alert alert-warning\'>Some inputs are invalid</div>';
 }
 ?>
 
@@ -73,16 +75,21 @@ if (isset($_POST['save'])) {
                     <div class="form-group">
                         <div class="row">
                             <div class="col-md-2">
-                                <label for="plant_input_available" class="col-sm-2 control-label">Available</label></div>
+                                <label for="plant_input_available" class="col-sm-2 control-label">Available</label>
+                            </div>
                             <div class="col-md-4">
                                 <input class="form-control" id="plant_input_available"
                                        name="available" type="text" required>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <br>
                         <input type="submit" class="btn btn-lg btn-success btn-block" name="save" value="Save"/>
+                    </div>
+                    <div class="col-md-2 col-sm-4">
+                        <br>
+                        <a href="plants.php" class="btn btn-lg btn-default btn-block" name="cancel">Cancel</a>
                     </div>
                 </fieldset>
             </form>

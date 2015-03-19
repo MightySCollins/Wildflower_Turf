@@ -47,7 +47,7 @@
             <a class="navbar-brand" href="../index.php"><?php echo COMPANY_NAME ?></a>
         </div>
         <!-- /.navbar-header -->
-
+        <div >
         <ul class="nav navbar-top-links navbar-right">
             <!-- /.dropdown -->
             <li class="dropdown">
@@ -59,7 +59,7 @@
                         echo '<li><a href="debug.php"><i class="fa fa-cog fa-fw"></i> Debug</a>
                     </li><li class="divider"></li>';
                     } ?>
-                    <li><a href="login.php?logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                    <li><a href="index.php?logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                     </li>
                 </ul>
                 <!-- /.dropdown-user -->
@@ -67,6 +67,7 @@
             <!-- /.dropdown -->
         </ul>
         <!-- /.navbar-top-links -->
+        </div>
 
         <div class="navbar-default sidebar" role="navigation">
             <div class="sidebar-nav navbar-collapse">

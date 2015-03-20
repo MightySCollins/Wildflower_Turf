@@ -25,3 +25,9 @@ First code version
 ##To Do
 [Fix] Session has been started on dashboard
 [Redo] Redo template
+
+remember values
+rremove loopup
+back and sancel
+save back to all plnats
+map for each bed

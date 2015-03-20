@@ -24,7 +24,7 @@
                 $total_plants = $result_of_login_check->num_rows;
                 echo "Total plants: ". $total_plants."    ";
 
-                $sql = "SELECT location
+                $sql = "SELECT id
                         FROM plants
                         WHERE available='Now';";
                 $result_of_login_check = $db_connection->query($sql);

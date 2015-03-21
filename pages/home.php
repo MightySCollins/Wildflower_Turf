@@ -24,11 +24,11 @@ if (!$db_connection->connect_errno) {
                         <div class="col-xs-9 text-right">
                             <div class="huge">
                                 <?php
-                                $sql = "SELECT location
+                                $sql = "SELECT id
                                     FROM plants;";
-                                $result_of_login_check = $db_connection->query($sql);
+                                $total_plants = $db_connection->query($sql);
 
-                                $total_plants = $result_of_login_check->num_rows;
+                                $total_plants = $total_plants->num_rows;
                                 echo $total_plants;
                                 ?>
                             </div>
@@ -56,12 +56,12 @@ if (!$db_connection->connect_errno) {
                         <div class="col-xs-9 text-right">
                             <div class="huge">
                                 <?php
-                                $sql = "SELECT location
+                                $sql = "SELECT id
                                     FROM plants
                                     WHERE available='Now';";
-                                $result_of_login_check = $db_connection->query($sql);
+                                $ready_plants = $db_connection->query($sql);
 
-                                $ready_plants = $result_of_login_check->num_rows;
+                                $ready_plants = $ready_plants->num_rows;
                                 echo $ready_plants;
                                 ?>
                             </div>
@@ -69,7 +69,7 @@ if (!$db_connection->connect_errno) {
                         </div>
                     </div>
                 </div>
-                <a href="plants.php?view=ready"> <!-- todo: add plants views -->
+                <a href="plants.php?view=ready">
                     <div class="panel-footer">
                         <span class="pull-left">View Ready</span>
                         <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -105,21 +105,30 @@ if (!$db_connection->connect_errno) {
             </div>
         </div>
         <div class="col-lg-3 col-md-6">
-            <div class="panel panel-red">
+            <div class="panel panel-yellow">
                 <div class="panel-heading">
                     <div class="row">
                         <div class="col-xs-3">
-                            <i class="fa fa-support fa-5x"></i>
+                            <i class="fa fa-pagelines fa-5x"></i>
                         </div>
                         <div class="col-xs-9 text-right">
-                            <div class="huge">13</div>
-                            <div>Support Tickets!</div>
+                            <div class="huge">
+                                <?php
+                                $sql = "SELECT bid
+                                    FROM beds;";
+                                $beds = $db_connection->query($sql);
+
+                                $beds = $beds->num_rows;
+                                echo $beds;
+                                ?>
+                            </div>
+                            <div>Beds</div>
                         </div>
                     </div>
                 </div>
-                <a href="#">
+                <a href="beds.php">
                     <div class="panel-footer">
-                        <span class="pull-left">View Details</span>
+                        <span class="pull-left">View Beds</span>
                         <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
 
                         <div class="clearfix"></div>

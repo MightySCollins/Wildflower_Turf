@@ -12,24 +12,25 @@
                 die(mysql_error());
             }
             mysql_select_db(DB_NAME);
-            if (empty($_GET['view'])) $results = mysql_query("SELECT * FROM plants");
+            if (isset($_GET['bid'])){$results = mysql_query("SELECT * FROM plants WHERE bed = '".$_GET['bid']."'");}
+            elseif (empty($_GET['view'])) $results = mysql_query("SELECT * FROM plants");
             elseif ($_GET['view'] === 'ready') $results = mysql_query("SELECT * FROM plants WHERE available = 'Now' ");
             elseif ($_GET['view'] === 'not_ready') $results = mysql_query("SELECT * FROM plants WHERE available <> 'Now' ");
 
             if (mysql_fetch_array($results) <> 0) {
-                $sql = "SELECT location
+                $sql = "SELECT id
                         FROM plants;";
-                $result_of_login_check = $db_connection->query($sql);
+                $plants = $db_connection->query($sql);
 
-                $total_plants = $result_of_login_check->num_rows;
+                $total_plants = $plants->num_rows;
                 echo "Total plants: ". $total_plants."    ";
 
-                $sql = "SELECT location
+                $sql = "SELECT id
                         FROM plants
                         WHERE available='Now';";
-                $result_of_login_check = $db_connection->query($sql);
+                $plants = $db_connection->query($sql);
 
-                $ready_plants = $result_of_login_check->num_rows;
+                $ready_plants = $plants->num_rows;
                 echo "Ready plants: ".$ready_plants."    ";
                 $not_ready_plants = $total_plants - $ready_plants;
                 echo "Not ready plants: ".$not_ready_plants;
@@ -39,6 +40,7 @@
                 <thead>
                 <tr>
                     <td>Location</td>
+                    <td>Bed</td>
                     <td>Product</td>
                     <td>Sown</td>
                     <td>QTY</td>
@@ -50,11 +52,12 @@
                 while ($row = mysql_fetch_array($results)) {
                     echo '<tr>
                         <td>' . $row['location'] . '</td>
+                        <td>' . $row['bed'] . '</td>
                         <td>' . $row['product'] . '</td>
                         <td>' . $row['sown'] . '</td>
                         <td>' . $row['qty'] . '</td>
                         <td>' . $row['available'] . '</td>
-                        <td><a href="edit.php?location=' . $row['location'] . '">Edit</a></td>
+                        <td><a href="edit.php?id=' . $row['id'] . '">Edit</a></td>
                     </tr>';
                 }
             } else {

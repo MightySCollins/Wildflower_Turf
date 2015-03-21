@@ -102,6 +102,18 @@
                         <!-- /.nav-second-level -->
                     </li>
                     <li>
+                        <a href="bed.php"><i class="fa fa-pagelines fa-fw"></i> Beds<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="bed.php"><i class="fa fa-pagelines fa-fw"></i> All</a>
+                            </li>
+                            <li>
+                                <a href="newbed.php"><i class="fa fa-pencil fa-fw"></i> Add New</a>
+                            </li>
+                        </ul>
+                        <!-- /.nav-second-level -->
+                    </li>
+                    <li>
                         <a href="../newplant.php"><i class="fa fa-pencil fa-fw"></i> New Plant</a>
                     </li>
                 </ul>

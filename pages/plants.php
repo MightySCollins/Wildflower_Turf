@@ -23,7 +23,7 @@
                 $plants = $db_connection->query($sql);
 
                 $total_plants = $plants->num_rows;
-                echo "Total plants: ". $total_plants."    ";
+                echo "Total pcolumn_2lants: ". $total_plants."    ";
 
                 $sql = "SELECT id
                         FROM plants
@@ -39,10 +39,10 @@
             <table class=\"table table-bordered table-hover table-striped\">
                 <thead>
                 <tr>
-                    <td>Location</td>
                     <td>Bed</td>
+                    <td>Location</td>
                     <td>Product</td>
-                    <td>Sown</td>
+                    <td>Sown Date</td>
                     <td>QTY</td>
                     <td>Available</td>
                     <td>Edit</td>
@@ -51,13 +51,14 @@
                 <tbody> ";
                 while ($row = mysql_fetch_array($results)) {
                     echo '<tr>
-                        <td>' . $row['location'] . '</td>
                         <td>' . $row['bed'] . '</td>
+                        <td>' . $row['location'] . '</td>
                         <td>' . $row['product'] . '</td>
                         <td>' . $row['sown'] . '</td>
                         <td>' . $row['qty'] . '</td>
                         <td>' . $row['available'] . '</td>
-                        <td><a href="edit.php?id=' . $row['id'] . '">Edit</a></td>
+                        <td><a href="edit.php?id=' . $row['id'] . '">Edit</a>
+                        <a href="notes.php?id=' . $row['id'] . '">Notes</a></td>
                     </tr>';
                 }
             } else {

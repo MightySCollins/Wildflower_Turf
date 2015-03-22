@@ -38,6 +38,8 @@ if (isset($_POST['save'])) {
     }
 
     while ($row = mysql_fetch_array($results)) {
+        $bed = $row['bed'];
+        $location = $row['location'];
         $product = $row['product'];
         $sown = $row['sown'];
         $qty = $row['qty'];
@@ -56,11 +58,19 @@ if (isset($_POST['save'])) {
                     <div class="form-group">
                         <div class="row">
                             <div class="col-md-2">
+                                <label for="plant_edit_bed" class="col-sm-2 control-label">Bed</label></div>
+                            <div class="col-md-4">
+                                <?php echo $bed?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-2">
                                 <label for="plant_edit_location" class="col-sm-2 control-label">Location</label></div>
                             <div class="col-md-4">
-                                <?php echo $id;?>
+                                <?php echo $location?>
                             </div>
-                            <input type="hidden" name="location" id="plant_edit_location" value="<?php echo $id?>">
                         </div>
                     </div>
                     <div class="form-group">
@@ -69,7 +79,7 @@ if (isset($_POST['save'])) {
                                 <label for="plant_edit_location" class="col-sm-2 control-label">Product</label></div>
                             <div class="col-md-4">
                                 <input class="form-control" id="plant_edit_product"
-                                       name="product" type="text" value="<?php if(isset($product))echo $product; ?>">
+                                       name="product" type="text" value="<?php if(isset($product))echo $product ?>">
                             </div>
                         </div>
                     </div>
@@ -104,6 +114,7 @@ if (isset($_POST['save'])) {
                             </div>
                         </div>
                     </div>
+                    <input type="hidden" name="id" id="plant_edit_id" value="<?php echo $id?>">
                     <div class="col-md-4">
                         <br>
                         <input type="submit" class="btn btn-lg btn-success btn-block" name="save" value="Save"/>

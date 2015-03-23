@@ -3,16 +3,17 @@
         <div class="col-lg-12">
             <h1 class="page-header">Beds</h1>
             <?php
-            $connect = mysql_connect(DB_HOST, DB_USER, DB_PASS);
-            if (!$connect) {
-                die(mysql_error());
+            $con = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+            if (mysqli_connect_errno() && $_SESSION['admin']) {
+                echo "Failed to connect to MySQL: " . mysqli_connect_error();
             }
-            mysql_select_db(DB_NAME);
-            $results = mysql_query("SELECT * FROM beds");
 
-            if (mysql_fetch_array($results) <> 0) {
-                echo "
-            <table class=\"table table-bordered table-hover table-striped\">
+            $sql = "SELECT * FROM beds";
+            $result = mysqli_query($con, $sql);
+
+            if (mysqli_num_rows($result)) {
+                echo '
+                <table class="table table-bordered table-hover table-striped">
                 <thead>
                 <tr>
                     <td>Name</td>
@@ -20,8 +21,8 @@
                     <td>View</td>
                 </tr>
                 </thead>
-                <tbody> ";
-                while ($row = mysql_fetch_array($results))
+                <tbody> ';
+                while ($row = mysqli_fetch_array($result))
                     echo '<tr>
                         <td>' . $row['name'] . '</td>
                         <td><a href="bededit.php?bid=' . $row['bid'] . '">Edit</a></td>
@@ -32,8 +33,8 @@
                 echo '<div class=\'alert alert-warning\'>No beds found</div>';
             }
             ?>
-            </tbody>
-            </table>
+                </tbody>
+                </table>
         </div>
         <!-- /.col-lg-12 -->
     </div>

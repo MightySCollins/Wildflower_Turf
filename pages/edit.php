@@ -38,10 +38,10 @@ if (isset($_POST['save'])) {
     }
 
     while ($row = mysql_fetch_array($results)) {
-        $product = $row['product'];
-        $sown = $row['sown'];
-        $qty = $row['qty'];
-        $available = $row['available'];
+        $product = htmlspecialchars($row['product']);
+        $sown = htmlspecialchars($row['sown']);
+        $qty = htmlspecialchars($row['qty']);
+        $available = htmlspecialchars($row['available']);
     }
 }
 ?>
@@ -118,9 +118,6 @@ if (isset($_POST['save'])) {
                     </div>
                 </fieldset>
             </form>
-
         </div>
-        <!-- /.col-lg-12 -->
     </div>
-    <!-- /.row -->
 </div>

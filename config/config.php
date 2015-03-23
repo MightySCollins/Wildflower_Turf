@@ -10,3 +10,4 @@ define("PHP_INFO", false); // if you want to see full PHP info Todo: Add support
 define("SHOW_CONFIG", false); // if this file can be shown
 define("SHOW_CONST", false); // USE WITH CAUTION
 define("SHOW_MYSQL", true); // Will not show current password
+define("VERSION", "0.0.1");

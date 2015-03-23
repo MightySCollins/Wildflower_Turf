@@ -15,10 +15,12 @@
 
             $result = mysqli_query($con, $sql);
             if (mysqli_num_rows($result)) {
-                echo "
+                echo '
             <table class=\"table table-bordered table-hover table-striped\">
                 <thead>
-                <tr>
+                <tr>';
+                if ($_SESSION['admin']) echo "<td>ID</td>";
+                echo '<td>Bed</td>
                     <td>Location</td>
                     <td>Bed</td>
                     <td>Product</td>
@@ -28,9 +30,11 @@
                     <td>Edit</td>
                 </tr>
                 </thead>
-                <tbody> ";
+                <tbody> ';
                 while ($row = mysqli_fetch_array($result)) {
-                    echo '<tr>
+                    echo '<tr>';
+                    if ($_SESSION['admin']) echo '<td>' . $row['id'] . '</td>';
+                    echo '<td>' . $row['bed'] . '</td>
                         <td>' . $row['location'] . '</td>
                         <td>' . $row['bed'] . '</td>
                         <td>' . $row['product'] . '</td>
@@ -49,7 +53,5 @@
             </table>
 
         </div>
-        <!-- /.col-lg-12 -->
     </div>
-    <!-- /.row -->
 </div>

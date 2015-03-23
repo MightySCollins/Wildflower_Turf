@@ -1,10 +1,16 @@
 <?php
-if (isset($_POST['id'])) $id = $_POST['id'];
-elseif (!empty($_GET['id'])) $id = $_GET['id'];
-else $id = 1;
+if (isset($_POST['id'])) {
+    $id = $_POST['id'];
+} elseif (!empty($_GET['id'])) {
+    $id = $_GET['id'];
+} else {
+    $id = 1;
+}
 
 $connect = mysql_connect(DB_HOST, DB_USER, DB_PASS);
-if (!$connect) die(mysql_error());
+if (!$connect) {
+    die(mysql_error());
+}
 mysql_select_db(DB_NAME);
 //echo $id;
 if (isset($_POST['delete'])) {
@@ -26,12 +32,14 @@ if (isset($_POST['save'])) {
         && is_numeric($qty)
         && !empty($available)
         && preg_match('/^[a-zA-Z\d]{0,64}$/i', $available)
-    )
-        $results = mysql_query("UPDATE plants
+    ) {
+            $results = mysql_query("UPDATE plants
                             SET product = '$product', sown = '$sown', qty = '$qty', available = '$available'
                             WHERE id='$id'");
-    else $message = '<div class=\'alert alert-warning\'>Some inputs are invalid</div>';
-} else {
+    } else {
+        $message = '<div class=\'alert alert-warning\'>Some inputs are invalid</div>';
+    }
+    } else {
     $results = mysql_query("SELECT * FROM plants WHERE id =" . $id . ";");
     if (!mysql_num_rows($results)) {
         $message = '<div class=\'alert alert-warning\'>The plant cannot be found</div>';
@@ -40,12 +48,12 @@ if (isset($_POST['save'])) {
     }
 
     while ($row = mysql_fetch_array($results)) {
-        $bed = $row['bed'];
-        $location = $row['location'];
-        $product = $row['product'];
-        $sown = $row['sown'];
-        $qty = $row['qty'];
-        $available = $row['available'];
+        $bed = htmlspecialchars($row['bed']);
+        $location = htmlspecialchars($row['location']);
+        $product = htmlspecialchars($row['product']);
+        $sown = htmlspecialchars($row['sown']);
+        $qty = htmlspecialchars($row['qty']);
+        $available = htmlspecialchars($row['available']);
     }
 }
 ?>
@@ -73,6 +81,7 @@ if (isset($_POST['save'])) {
                             <div class="col-md-4">
                                 <?php echo $location?>
                             </div>
+                            <input type="hidden" name="location" id="plant_edit_location" value="<?php echo $id?>">
                         </div>
                     </div>
                     <div class="form-group">
@@ -135,9 +144,6 @@ if (isset($_POST['save'])) {
                     </div>
                 </fieldset>
             </form>
-
         </div>
-        <!-- /.col-lg-12 -->
     </div>
-    <!-- /.row -->
 </div>

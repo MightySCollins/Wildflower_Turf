@@ -49,8 +49,8 @@
         <!-- /.navbar-header -->
         <div >
         <ul class="nav navbar-top-links navbar-right">
-            <?php if ($_SESSION['admin']) echo "Version ". VERSION ?>
-            <!-- /.dropdown -->
+            <?php if ($_SESSION['admin'] || SHOW_VERSION === true) echo "Version ". VERSION ?>
+
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                     <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>

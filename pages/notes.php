@@ -9,42 +9,47 @@ mysql_select_db(DB_NAME);
 
 if (isset($_POST['save'])) {
     $notes = filter_var($_POST['notes'], FILTER_SANITIZE_STRING);
-
     $results = mysql_query("SELECT * FROM notes WHERE plantid =" . $id . ";");
-    if($results === FALSE) {
+    if ($results === FALSE) {
         die(mysql_error()); // TODO: better error handling
     }
+
     if (!mysql_num_rows($results)) {
         $message = '<div class=\'alert alert-warning\'>Added new note</div>';
-        $results = mysql_query("INSERT INTO notes VALUES ('$id', '$note')");
+        $results = mysql_query("INSERT INTO notes (plantid, note) VALUES ('$id', '$notes')");
+        if ($results === FALSE) {
+            die(mysql_error()); // TODO: better error handling
+        }
     } else {
-        $results = mysql_query("UPDATE notes SET note = '$notes' WHERE id='$id'");
+        $results = mysql_query("UPDATE notes SET note = '$notes' WHERE plantid='$id'");
+        if ($results === FALSE) {
+            die(mysql_error()); // TODO: better error handling
+        }
     }
 
 } else {
-    $results = mysql_query("SELECT * FROM plants WHERE id =" . $id . ";");
-    if (!mysql_num_rows($results)) {
-        $message = '<div class=\'alert alert-warning\'>The plant cannot be found</div>';
-        $id = 1;
-        $results = mysql_query("SELECT * FROM plants WHERE id =" . $id . ";");
-    }
-    while ($row = mysql_fetch_array($results)) {
-        $bed = $row['bed'];
-        $location = $row['location'];
-        $product = $row['product'];
-        $sown = $row['sown'];
-        $qty = $row['qty'];
-        $available = $row['available'];
-    }
     $results = mysql_query("SELECT * FROM notes WHERE plantid =" . $id . ";");
-    if($results === FALSE) {
+    if ($results === FALSE) {
         die(mysql_error()); // TODO: better error handling
     }
     if (!mysql_num_rows($results)) {
         $message = '<div class=\'alert alert-warning\'>No notes found</div>';
     } else {
+        $row = mysql_fetch_array($results);
         $notes = $row['note'];
     }
+}
+$results = mysql_query("SELECT * FROM plants WHERE id =" . $id . ";");
+if (!mysql_num_rows($results)) {
+    $message = '<div class=\'alert alert-warning\'>The plant cannot be found</div>';
+}
+while ($row = mysql_fetch_array($results)) {
+    $bed = $row['bed'];
+    $location = $row['location'];
+    $product = $row['product'];
+    $sown = $row['sown'];
+    $qty = $row['qty'];
+    $available = $row['available'];
 }
 ?>
 
@@ -95,7 +100,6 @@ if (isset($_POST['save'])) {
                             </div>
                         </div>
                         <input type="hidden" name="id" id="plant_id" value="<?php echo $id ?>">
-
                         <div class="col-md-8">
                             <div class="form-group">
                                 <textarea name="notes" class="form-control"

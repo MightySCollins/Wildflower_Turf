@@ -16,7 +16,7 @@
             $result = mysqli_query($con, $sql);
             if (mysqli_num_rows($result)) {
                 echo '
-            <table class=\"table table-bordered table-hover table-striped\">
+            <table class="table table-bordered table-hover table-striped">
                 <thead>
                 <tr>';
                 if ($_SESSION['admin']) echo "<td>ID</td>";

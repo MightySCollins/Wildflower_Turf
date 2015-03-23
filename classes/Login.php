@@ -98,6 +98,7 @@ class Login
                         $_SESSION['user_name'] = $result_row->user_name;
                         $_SESSION['user_email'] = $result_row->user_email;
                         $_SESSION['user_login_status'] = 1;
+                        if ($result_row->user_name === ADMIN) $_SESSION['admin'] = true; else $_SESSION['admin'] = false;
 
                     } else {
                         $this->errors[] = "Wrong password. Try again.";

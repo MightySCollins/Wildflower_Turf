@@ -49,13 +49,14 @@
         <!-- /.navbar-header -->
         <div >
         <ul class="nav navbar-top-links navbar-right">
+            <?php if ($_SESSION['admin']) echo "Version ". VERSION ?>
             <!-- /.dropdown -->
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                     <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-user">
-                    <?php if ($_SESSION['user_name'] == ADMIN) {
+                    <?php if ($_SESSION['admin']) {
                         echo '<li><a href="debug.php"><i class="fa fa-cog fa-fw"></i> Debug</a>
                     </li><li class="divider"></li>';
                     } ?>

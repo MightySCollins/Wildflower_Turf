@@ -23,7 +23,7 @@
                 $plants = $db_connection->query($sql);
 
                 $total_plants = $plants->num_rows;
-                echo "Total pcolumn_2lants: ". $total_plants."    ";
+                echo "Total plants: ". $total_plants."    ";
 
                 $sql = "SELECT id
                         FROM plants
@@ -34,12 +34,12 @@
                 echo "Ready plants: ".$ready_plants."    ";
                 $not_ready_plants = $total_plants - $ready_plants;
                 echo "Not ready plants: ".$not_ready_plants;
-
-                echo "
+                echo "<br><br>
             <table class=\"table table-bordered table-hover table-striped\">
                 <thead>
-                <tr>
-                    <td>Bed</td>
+                <tr>";
+                    if ($_SESSION['admin']) echo "<td>ID</td>";
+                    echo "<td>Bed</td>
                     <td>Location</td>
                     <td>Product</td>
                     <td>Sown Date</td>
@@ -50,8 +50,9 @@
                 </thead>
                 <tbody> ";
                 while ($row = mysql_fetch_array($results)) {
-                    echo '<tr>
-                        <td>' . $row['bed'] . '</td>
+                    echo '<tr>';
+                    if ($_SESSION['admin']) echo '<td>' . $row['id'] . '</td>';
+                    echo '<td>' . $row['bed'] . '</td>
                         <td>' . $row['location'] . '</td>
                         <td>' . $row['product'] . '</td>
                         <td>' . $row['sown'] . '</td>

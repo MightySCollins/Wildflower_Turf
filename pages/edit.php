@@ -12,6 +12,8 @@ if (isset($_POST['delete'])) {
 }
 
 if (isset($_POST['save'])) {
+    $bed = filter_var($_POST['bed'], FILTER_SANITIZE_STRING);
+    $location = filter_var($_POST['location'], FILTER_SANITIZE_STRING);
     $product = filter_var($_POST['product'], FILTER_SANITIZE_STRING);
     $sown = $_POST['sown'];
     $qty = filter_var($_POST['qty'], FILTER_SANITIZE_NUMBER_INT);
@@ -114,7 +116,11 @@ if (isset($_POST['save'])) {
                             </div>
                         </div>
                     </div>
+
                     <input type="hidden" name="id" id="plant_edit_id" value="<?php echo $id?>">
+                    <input type="hidden" name="bed" id="plant_edit_bed" value="<?php echo $bed?>">
+                    <input type="hidden" name="location" id="plant_edit_location" value="<?php echo $location?>">
+
                     <div class="col-md-4">
                         <br>
                         <input type="submit" class="btn btn-lg btn-success btn-block" name="save" value="Save"/>

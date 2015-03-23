@@ -3,53 +3,36 @@ if (isset($_POST['id'])) $id = $_POST['id'];
 elseif (!empty($_GET['id'])) $id = $_GET['id'];
 else $id = 1;
 
-$connect = mysql_connect(DB_HOST, DB_USER, DB_PASS);
-if (!$connect) die(mysql_error());
+$con = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+if (mysqli_connect_errno() && $_SESSION['admin']) {
+    echo "Failed to connect to MySQL: " . mysqli_connect_error();
+}
+
 mysql_select_db(DB_NAME);
 
 if (isset($_POST['save'])) {
     $notes = filter_var($_POST['notes'], FILTER_SANITIZE_STRING);
-    $results = mysql_query("SELECT * FROM notes WHERE plantid =" . $id . ";");
-    if ($results === FALSE) {
-        die(mysql_error()); // TODO: better error handling
-    }
+    $sql = "SELECT * FROM notes WHERE plantid =" . $id . ";";
+    $result = mysqli_query($con, $sql);
 
-    if (!mysql_num_rows($results)) {
+    if (!mysqli_num_rows($result)) {
         $message = '<div class=\'alert alert-warning\'>Added new note</div>';
-        $results = mysql_query("INSERT INTO notes (plantid, note) VALUES ('$id', '$notes')");
-        if ($results === FALSE) {
-            die(mysql_error()); // TODO: better error handling
-        }
-    } else {
-        $results = mysql_query("UPDATE notes SET note = '$notes' WHERE plantid='$id'");
-        if ($results === FALSE) {
-            die(mysql_error()); // TODO: better error handling
-        }
-    }
+
+        $sql = "INSERT INTO notes (plantid, note) VALUES ('$id', '$notes')";
+    } else $sql = "UPDATE notes SET note = '$notes' WHERE plantid='$id'";
+
+    $result = mysqli_query($con, $sql);
 
 } else {
-    $results = mysql_query("SELECT * FROM notes WHERE plantid =" . $id . ";");
-    if ($results === FALSE) {
-        die(mysql_error()); // TODO: better error handling
-    }
-    if (!mysql_num_rows($results)) {
-        $message = '<div class=\'alert alert-warning\'>No notes found</div>';
-    } else {
-        $row = mysql_fetch_array($results);
+    $sql = "SELECT * FROM notes WHERE plantid =" . $id . ";";
+    $result = mysqli_query($con, $sql);
+
+    if (!mysqli_num_rows($result))
+        $message = '<div class=\'alert alert-warning\'>No notes found, will add new</div>';
+    else {
+        $row = mysqli_fetch_array($result);
         $notes = $row['note'];
     }
-}
-$results = mysql_query("SELECT * FROM plants WHERE id =" . $id . ";");
-if (!mysql_num_rows($results)) {
-    $message = '<div class=\'alert alert-warning\'>The plant cannot be found</div>';
-}
-while ($row = mysql_fetch_array($results)) {
-    $bed = $row['bed'];
-    $location = $row['location'];
-    $product = $row['product'];
-    $sown = $row['sown'];
-    $qty = $row['qty'];
-    $available = $row['available'];
 }
 ?>
 
@@ -57,53 +40,70 @@ while ($row = mysql_fetch_array($results)) {
     <div class="row">
         <div class="col-lg-12">
             <h1 class="page-header">Notes</h1>
-            <?php if (isset($message)) echo $message ?>
-            <form method="post" action="notes.php" name=noteedit">
+            <?php
+            if (isset($message)) echo $message;
+
+            $sql = "SELECT * FROM plants WHERE id =" . $id . ";";
+            $message = '';
+            $result = mysqli_query($con, $sql);
+
+            if (!mysqli_num_rows($result))
+            echo '<div class=\'alert alert-warning\'>The plant cannot be found</div>';
+            else {
+                $row = mysqli_fetch_array($result);
+                $bed = $row['bed'];
+                $location = $row['location'];
+                $product = $row['product'];
+                $sown = $row['sown'];
+                $qty = $row['qty'];
+                $available = $row['available'];
+                echo '
+                <form method="post" action="notes.php" name=noteedit">
                 <fieldset>
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
                                 <div class="row">
                                     <label class="col-sm-4 control-label">Bed</label>
-                                    <?php echo $bed ?>
+                                    '. $bed .'
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="row">
                                     <label class="col-sm-4 control-label">Location</label>
-                                    <?php echo $location ?>
+                                    '. $location .'
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="row">
                                     <label class="col-sm-4 control-label">Product</label>
-                                    <?php if (!empty($product)) echo $product ?>
+                                    '; if (isset($product)) echo $product; echo '
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="row">
                                     <label class="col-sm-4 control-label">Sown</label>
-                                    <?php if (isset($sown)) echo $sown ?>
+                                    '; if (isset($sown)) echo $sown; echo '
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="row">
                                     <label class="col-sm-4 control-label">QTY</label>
-                                    <?php if (isset($qty)) echo $qty ?>
+                                    '; if (isset($qty)) echo $qty; echo '
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="row">
                                     <label class="col-sm-4 control-label">Available</label>
-                                    <?php if (isset($available)) echo $available ?>
+                                    '; if (isset($available)) echo $available; echo '
                                 </div>
                             </div>
                         </div>
-                        <input type="hidden" name="id" id="plant_id" value="<?php echo $id ?>">
+                        <input type="hidden" name="id" id="plant_id" value="'. $id .'">
                         <div class="col-md-8">
                             <div class="form-group">
                                 <textarea name="notes" class="form-control"
-                                          rows="8"><?php if (isset($notes)) echo $notes ?></textarea>
+                                          rows="8">'; if (isset($notes)) echo $notes; echo '</textarea>
                             </div>
                             <div class="form-group">
                                 <input type="submit" class="btn btn-lg btn-success btn-block" name="save" value="Save"/>
@@ -114,12 +114,10 @@ while ($row = mysql_fetch_array($results)) {
                         </div>
                     </div>
                 </fieldset>
-            </form>
+                </form>';
+            }
+            ?>
         </div>
-
-
     </div>
-    <!-- /.col-lg-12 -->
 </div>
-<!-- /.row -->
 </div>

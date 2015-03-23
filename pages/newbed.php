@@ -1,6 +1,8 @@
 <?php
 $connect = mysql_connect(DB_HOST, DB_USER, DB_PASS);
-if (!$connect) die(mysql_error());
+if (!$connect) {
+    die(mysql_error());
+}
 mysql_select_db(DB_NAME);
 
 if (isset($_POST['save'])) {
@@ -10,8 +12,10 @@ if (isset($_POST['save'])) {
     ) {
         $results = mysql_query("INSERT INTO beds (name) VALUES ('$name');");
         $message = '<div class=\'alert alert-success\'>Bed added</div>';
-    } else $message = '<div class=\'alert alert-warning\'>Some inputs are invalid</div>';
-}
+    } else {
+        $message = '<div class=\'alert alert-warning\'>Some inputs are invalid</div>';
+    }
+    }
 ?>
 
 <div class="container-fluid">

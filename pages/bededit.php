@@ -1,10 +1,16 @@
 <?php
-if (isset($_POST['bid'])) $location = $_POST['bid'];
-elseif (!empty($_GET['bid'])) $location = $_GET['bid'];
-else $bid = 1;
+if (isset($_POST['bid'])) {
+    $location = $_POST['bid'];
+} elseif (!empty($_GET['bid'])) {
+    $location = $_GET['bid'];
+} else {
+    $bid = 1;
+}
 
 $connect = mysql_connect(DB_HOST, DB_USER, DB_PASS);
-if (!$connect) die(mysql_error());
+if (!$connect) {
+    die(mysql_error());
+}
 mysql_select_db(DB_NAME);
 //echo $id;
 if (isset($_POST['delete'])) {
@@ -15,10 +21,12 @@ if (isset($_POST['save'])) {
     $name = filter_var($_POST['name'], FILTER_SANITIZE_STRING);
     if (!empty($name)
         && preg_match('/^[a-zA-Z\d]{0,64}$/i', $name)
-    )
-        $results = mysql_query("UPDATE beds SET name = '$name' WHERE bid='$bid'");
-    else $message = '<div class=\'alert alert-warning\'>Some inputs are invalid</div>';
-} else {
+    ) {
+            $results = mysql_query("UPDATE beds SET name = '$name' WHERE bid='$bid'");
+    } else {
+        $message = '<div class=\'alert alert-warning\'>Some inputs are invalid</div>';
+    }
+    } else {
     $results = mysql_query("SELECT * FROM beds WHERE bid =" . $bid . ";");
     if (!mysql_num_rows($results)) {
         $message = '<div class=\'alert alert-warning\'>The bed cannot be found</div>';
@@ -31,7 +39,9 @@ if (isset($_POST['save'])) {
 
     }
 }
-if ($_SESSION['user_name'] === ADMIN) echo $bid;
+if ($_SESSION['user_name'] === ADMIN) {
+    echo $bid;
+}
 ?>
 
 <div class="container-fluid">

@@ -41,7 +41,7 @@
                         <td>' . $row['sown'] . '</td>
                         <td>' . $row['qty'] . '</td>
                         <td>' . $row['available'] . '</td>
-                        <td><a href="edit.php?id=' . $row['id'] . '">Edit</a></td>
+                        <td><a href="edit.php?id=' . $row['id'] . '">Edit</a> | <a href="notes.php?id=' . $row['id'] . '">Notes</a></td>
                     </tr>';
 
                 }

@@ -1,46 +1,39 @@
 <?php
 if (isset($_POST['bid'])) {
-    $location = $_POST['bid'];
-} elseif (!empty($_GET['bid'])) {
-    $location = $_GET['bid'];
+    $bid = $_POST['bid'];
+} elseif (isset($_GET['bid'])) {
+    $bid = $_GET['bid'];
 } else {
     $bid = 1;
 }
 
-$connect = mysql_connect(DB_HOST, DB_USER, DB_PASS);
-if (!$connect) {
-    die(mysql_error());
+$con = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+if (mysqli_connect_errno() && $_SESSION['admin']) {
+    echo "Failed to connect to MySQL: " . mysqli_connect_error();
 }
-mysql_select_db(DB_NAME);
-//echo $id;
+
 if (isset($_POST['delete'])) {
-    $results = mysql_query("DELETE FROM beds WHERE bid='$bid';");
+    $sql = "DELETE FROM beds WHERE bid='$bid'";
+    $result = mysqli_query($con, $sql);
 }
 
 if (isset($_POST['save'])) {
     $name = filter_var($_POST['name'], FILTER_SANITIZE_STRING);
-    if (!empty($name)
-        && preg_match('/^[a-zA-Z\d]{0,64}$/i', $name)
-    ) {
-            $results = mysql_query("UPDATE beds SET name = '$name' WHERE bid='$bid'");
-    } else {
-        $message = '<div class=\'alert alert-warning\'>Some inputs are invalid</div>';
-    }
-    } else {
-    $results = mysql_query("SELECT * FROM beds WHERE bid =" . $bid . ";");
-    if (!mysql_num_rows($results)) {
+    if (!empty($name)) {
+        $sql = "UPDATE beds SET name = '$name' WHERE bid='$bid'";
+        $result = mysqli_query($con, $sql);
+    } else
+        $message = '<div class="alert alert-warning">Some inputs are invalid</div>';
+} else {
+    $sql = "SELECT * FROM beds WHERE bid ='$bid '";
+    $result = mysqli_query($con, $sql);
+    if (!mysqli_num_rows($result)) {
         $message = '<div class=\'alert alert-warning\'>The bed cannot be found</div>';
-        $location = 1;
-        $results = mysql_query("SELECT * FROM beds WHERE bid =" . $location . ";");
-    }
-
-    while ($row = mysql_fetch_array($results)) {
-        $name = $row['name'];
-
-    }
-}
-if ($_SESSION['user_name'] === ADMIN) {
-    echo $bid;
+    } else {
+        while ($row = mysqli_fetch_array($result)) {
+            $name = $row['name'];
+        }
+    };
 }
 ?>
 
@@ -51,6 +44,17 @@ if ($_SESSION['user_name'] === ADMIN) {
             <?php if (isset($message)) echo $message ?>
             <form method="post" action="bededit.php" name="bededit">
                 <fieldset>
+                    <?php if ($_SESSION['admin']) echo'
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <label for="bed_edit_id" class="col-sm-2 control-label">ID</label></div>
+                            <div class="col-md-4">
+                                '. $bid .'
+                            </div>
+                        </div>
+                    </div>';
+                    ?>
                     <div class="form-group">
                         <div class="row">
                             <div class="col-md-2">
@@ -58,10 +62,10 @@ if ($_SESSION['user_name'] === ADMIN) {
                             <div class="col-md-4">
                                 <input class="form-control" id="bed_edit_name"
                                        name="name" type="text" value="<?php echo $name ?>">
-                                <input type="hidden" name="location" value="<?php echo $bid ?>">
                             </div>
                         </div>
                     </div>
+                    <input type="hidden" name="bid" value="<?php echo $bid ?>">
                     <div class="col-md-4">
                         <br>
                         <input type="submit" class="btn btn-lg btn-success btn-block" name="save" value="Save"/>

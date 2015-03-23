@@ -1,20 +1,17 @@
 <?php
-if (isset($_POST['id'])) {
-    $id = $_POST['id'];
-} elseif (!empty($_GET['id'])) {
-    $id = $_GET['id'];
-} else {
-    $id = 1;
+if (isset($_POST['id'])) $id = $_POST['id'];
+elseif (isset($_GET['id'])) $id = $_GET['id'];
+else $id = 1;
+
+$con = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+if (mysqli_connect_errno() && $_SESSION['admin']) {
+    echo "Failed to connect to MySQL: " . mysqli_connect_error();
 }
 
-$connect = mysql_connect(DB_HOST, DB_USER, DB_PASS);
-if (!$connect) {
-    die(mysql_error());
-}
-mysql_select_db(DB_NAME);
-//echo $id;
 if (isset($_POST['delete'])) {
-    $results = mysql_query("DELETE FROM plants WHERE id='$id';");
+    $sql = "DELETE FROM plants WHERE id='$id'";
+    $result = mysqli_query($con, $sql);
+    $message = '<div class="alert alert-warning">Plant deleted</div>';
 }
 
 if (isset($_POST['save'])) {
@@ -30,24 +27,23 @@ if (isset($_POST['save'])) {
         && preg_match('/^[a-zA-Z\d]{0,64}$/i', $product)
         && !empty($qty)
         && is_numeric($qty)
-        && !empty($available)
-        && preg_match('/^[a-zA-Z\d]{0,64}$/i', $available)
-    ) {
-            $results = mysql_query("UPDATE plants
-                            SET product = '$product', sown = '$sown', qty = '$qty', available = '$available'
-                            WHERE id='$id'");
-    } else {
-        $message = '<div class=\'alert alert-warning\'>Some inputs are invalid</div>';
-    }
-    } else {
-    $results = mysql_query("SELECT * FROM plants WHERE id =" . $id . ";");
-    if (!mysql_num_rows($results)) {
-        $message = '<div class=\'alert alert-warning\'>The plant cannot be found</div>';
+        && !empty($available))
+    {
+        $sql = "UPDATE plants SET product = '$product', sown = '$sown', qty = '$qty', available = '$available' WHERE id='$id'";
+        $result = mysqli_query($con, $sql);
+        $message = '<div class="alert alert-success">Plant updated</div>';
+    } else $message = '<div class="alert alert-warning">Some inputs are invalid</div>'; //todo: more descriptive
+} else {
+    $sql = "SELECT * FROM plants WHERE id ='$id'";
+    $result = mysqli_query($con, $sql);
+    if (!mysqli_num_rows($result)) {
+        $message = '<div class="alert alert-warning">The plant cannot be found</div>';
         $id = 1;
-        $results = mysql_query("SELECT * FROM plants WHERE id =" . $id . ";");
+        $sql = "SELECT * FROM plants WHERE id ='$id'";
+        $result = mysqli_query($con, $sql);
     }
 
-    while ($row = mysql_fetch_array($results)) {
+    while ($row = mysqli_fetch_array($result)) {
         $bed = htmlspecialchars($row['bed']);
         $location = htmlspecialchars($row['location']);
         $product = htmlspecialchars($row['product']);
@@ -70,7 +66,7 @@ if (isset($_POST['save'])) {
                             <div class="col-md-2">
                                 <label for="plant_edit_bed" class="col-sm-2 control-label">Bed</label></div>
                             <div class="col-md-4">
-                                <?php echo $bed?>
+                                <?php echo $bed ?>
                             </div>
                         </div>
                     </div>
@@ -79,18 +75,18 @@ if (isset($_POST['save'])) {
                             <div class="col-md-2">
                                 <label for="plant_edit_location" class="col-sm-2 control-label">Location</label></div>
                             <div class="col-md-4">
-                                <?php echo $location?>
+                                <?php echo $location ?>
                             </div>
-                            <input type="hidden" name="location" id="plant_edit_location" value="<?php echo $id?>">
+                            <input type="hidden" name="location" id="plant_edit_location" value="<?php echo $id ?>">
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="row">
                             <div class="col-md-2">
-                                <label for="plant_edit_location" class="col-sm-2 control-label">Product</label></div>
+                                <label for="plant_edit_product" class="col-sm-2 control-label">Product</label></div>
                             <div class="col-md-4">
                                 <input class="form-control" id="plant_edit_product"
-                                       name="product" type="text" value="<?php if(isset($product))echo $product ?>">
+                                       name="product" type="text" value="<?php if (isset($product)) echo $product ?>">
                             </div>
                         </div>
                     </div>
@@ -100,7 +96,7 @@ if (isset($_POST['save'])) {
                                 <label for="plant_edit_sown" class="col-sm-2 control-label">Sown</label></div>
                             <div class="col-md-4">
                                 <input class="form-control" id="plant_edit_sown"
-                                       name="sown" type="date" value="<?php if(isset($sown))echo $sown ?>" required>
+                                       name="sown" type="date" value="<?php if (isset($sown)) echo $sown ?>" required>
                             </div>
                         </div>
                     </div>
@@ -110,7 +106,7 @@ if (isset($_POST['save'])) {
                                 <label for="plant_edit_qty" class="col-sm-2 control-label">QTY</label></div>
                             <div class="col-md-4">
                                 <input class="form-control" id="plant_edit_qty"
-                                       name="qty" type="number" value="<?php if(isset($qty))echo $qty ?>" required>
+                                       name="qty" type="number" value="<?php if (isset($qty)) echo $qty ?>" required>
                             </div>
                         </div>
                     </div>
@@ -121,14 +117,15 @@ if (isset($_POST['save'])) {
                             </div>
                             <div class="col-md-4">
                                 <input class="form-control" id="plant_edit_available"
-                                       name="available" type="text" value="<?php if(isset($available))echo $available ?>" required>
+                                       name="available" type="text"
+                                       value="<?php if (isset($available)) echo $available ?>" required>
                             </div>
                         </div>
                     </div>
 
-                    <input type="hidden" name="id" id="plant_edit_id" value="<?php echo $id?>">
-                    <input type="hidden" name="bed" id="plant_edit_bed" value="<?php echo $bed?>">
-                    <input type="hidden" name="location" id="plant_edit_location" value="<?php echo $location?>">
+                    <input type="hidden" name="id" id="plant_edit_id" value="<?php echo $id ?>">
+                    <input type="hidden" name="bed" id="plant_edit_bed" value="<?php echo $bed ?>">
+                    <input type="hidden" name="location" id="plant_edit_location" value="<?php echo $location ?>">
 
                     <div class="col-md-4">
                         <br>

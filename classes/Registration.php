@@ -26,7 +26,7 @@ class Registration
     public function __construct()
     {
         if (isset($_POST["register"])) {
-            $this->registerNewUser();
+            $this->registerUser();
         }
     }
 
@@ -34,36 +34,40 @@ class Registration
      * handles the entire registration process. checks all error possibilities
      * and creates a new user in the database if everything is fine
      */
-    private function registerNewUser()
+    private function registerUser()
     {
-        if (empty($_POST['user_name'])) {
+        $user_name = filter_var($_POST['user_name'], FILTER_SANITIZE_STRING);
+        $user_email = filter_var($_POST['user_email'], FILTER_SANITIZE_EMAIL);
+        $user_password_new = $_POST['user_password_new'];
+        $user_password_repeat = $_POST['user_password_repeat'];
+        if (empty($user_name)) {
             $this->errors[] = "Empty Username";
-        } elseif (empty($_POST['user_password_new']) || empty($_POST['user_password_repeat'])) {
+        } elseif (empty($user_password_new) || empty($user_password_repeat)) {
             $this->errors[] = "Empty Password";
-        } elseif ($_POST['user_password_new'] !== $_POST['user_password_repeat']) {
+        } elseif ($user_password_new !== $user_password_repeat) {
             $this->errors[] = "Password and password repeat are not the same";
-        } elseif (strlen($_POST['user_password_new']) < 6) {
+        } elseif (strlen($user_password_new) < 6) {
             $this->errors[] = "Password has a minimum length of 6 characters";
-        } elseif (strlen($_POST['user_name']) > 64 || strlen($_POST['user_name']) < 2) {
+        } elseif (strlen($user_name) > 64 || strlen($user_name) < 2) {
             $this->errors[] = "Username cannot be shorter than 2 or longer than 64 characters";
-        } elseif (!preg_match('/^[a-z\d]{2,64}$/i', $_POST['user_name'])) {
+        } elseif (!preg_match('/^[a-z\d]{2,64}$/i', $user_name)) {
             $this->errors[] = "Username does not fit the name scheme: only a-Z and numbers are allowed, 2 to 64 characters";
-        } elseif (empty($_POST['user_email'])) {
+        } elseif (empty($user_email)) {
             $this->errors[] = "Email cannot be empty";
-        } elseif (strlen($_POST['user_email']) > 64) {
+        } elseif (strlen($user_email) > 64) {
             $this->errors[] = "Email cannot be longer than 64 characters";
-        } elseif (!filter_var($_POST['user_email'], FILTER_VALIDATE_EMAIL)) {
+        } elseif (!filter_var($user_email, FILTER_VALIDATE_EMAIL)) {
             $this->errors[] = "Your email address is not in a valid email format";
-        } elseif (!empty($_POST['user_name'])
-            && strlen($_POST['user_name']) <= 64
-            && strlen($_POST['user_name']) >= 2
-            && preg_match('/^[a-z\d]{2,64}$/i', $_POST['user_name'])
-            && !empty($_POST['user_email'])
-            && strlen($_POST['user_email']) <= 64
-            && filter_var($_POST['user_email'], FILTER_VALIDATE_EMAIL)
-            && !empty($_POST['user_password_new'])
-            && !empty($_POST['user_password_repeat'])
-            && ($_POST['user_password_new'] === $_POST['user_password_repeat'])
+        } elseif (!empty($user_name)
+            && strlen($user_name) <= 64
+            && strlen($user_name) >= 2
+            && preg_match('/^[a-z\d]{2,64}$/i', $user_name)
+            && !empty($user_email)
+            && strlen($user_email) <= 64
+            && filter_var($user_email, FILTER_VALIDATE_EMAIL)
+            && !empty($user_password_new)
+            && !empty($user_password_repeat)
+            && ($user_password_new === $user_password_repeat)
         ) {
             // create a database connection
             $this->db_connection = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
@@ -77,10 +81,10 @@ class Registration
             if (!$this->db_connection->connect_errno) {
 
                 // escaping, additionally removing everything that could be (html/javascript-) code
-                $user_name = $this->db_connection->real_escape_string(strip_tags($_POST['user_name'], ENT_QUOTES));
-                $user_email = $this->db_connection->real_escape_string(strip_tags($_POST['user_email'], ENT_QUOTES));
+                $user_name = $this->db_connection->real_escape_string(strip_tags($user_name, ENT_QUOTES));
+                $user_email = $this->db_connection->real_escape_string(strip_tags($user_email, ENT_QUOTES));
 
-                $user_password = $_POST['user_password_new'];
+                $user_password = $user_password_new;
 
                 // crypt the user's password with PHP 5.5's password_hash() function, results in a 60 character
                 // hash string. the PASSWORD_DEFAULT constant is defined by the PHP 5.5, or if you are using

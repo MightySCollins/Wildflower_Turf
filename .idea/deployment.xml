@@ -2,6 +2,13 @@
 <project version="4">
   <component name="PublishConfigData" autoUpload="Always" serverName="XAMPP Apache" uploadOnCheckin="813afff4-8e0d-4576-9452-cfe8769046b9">
     <serverData>
+      <paths name="The Pro Host">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/wildflower/" local="$PROJECT_DIR$" web="/wildflower/" />
+          </mappings>
+        </serverdata>
+      </paths>
       <paths name="XAMPP Apache">
         <serverdata>
           <mappings>

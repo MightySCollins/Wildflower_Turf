@@ -47,7 +47,9 @@
                 </div>
                 <div class="panel-body">
                     <?php
-                    if (!REGISTER) echo '<div class=\'alert alert-warning\'>Registration is currently <strong>closed</strong></div>';
+                    if (!REGISTER) {
+                        echo '<div class=\'alert alert-warning\'>Registration is currently <strong>closed</strong></div>';
+                    }
 
                     if (isset($login)) {
                         if ($login->errors) {
@@ -62,20 +64,23 @@
                         }
                     }
                     ?>
-                    <form role="form">
+                    <form method="post" action="index.php" name="loginform">
                         <fieldset>
                             <div class="form-group">
-                                <input class="form-control" id="login_input_username" placeholder="Username"
-                                       name="username" type="text" autofocus>
+                                <input class="form-control" id="login_input_username" placeholder="Username or Email"
+                                       name="user_name" type="text" autocorrect="off" autocapitalize="off" autofocus>
                             </div>
                             <div class="form-group">
                                 <input class="form-control" id="login_input_password" placeholder="Password"
-                                       name="password" type="password"
+                                       name="user_password" type="password" autocorrect="off"
                                        value="">
                             </div>
                             <input type="submit" class="btn btn-lg btn-success btn-block" name="login" value="Login"/>
                         </fieldset>
-                        <?php if (REGISTER) echo '<br><a class="btn btn-primary" href="register.php">Register Now</a>'; ?>
+                        <?php if (REGISTER) {
+                            echo '<br><a class="btn btn-primary" href="register.php">Register Now</a>';
+                        }
+                        ?>
                     </form>
                 </div>
             </div>

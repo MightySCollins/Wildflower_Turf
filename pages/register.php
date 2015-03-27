@@ -47,7 +47,9 @@
                 </div>
                 <div class="panel-body">
                     <?php
-                    if (!REGISTER) echo '<div class=\'alert alert-warning\'>Registration is currently <strong>closed</strong></div>';
+                    if (!REGISTER) {
+                        echo '<div class=\'alert alert-warning\'>Registration is currently <strong>closed</strong></div>';
+                    }
 
                     if (isset($registration)) {
                         if ($registration->errors) {
@@ -66,11 +68,14 @@
                         <fieldset>
                             <div class="form-group">
                                 <input class="form-control" id="login_input_username" placeholder="Username"
-                                       name="user_name" type="text" value="<?php ?>" autofocus>
+                                       name="user_name" type="text"
+                                       value="<?php if (isset($_POST['user_name'])) echo $_POST['user_name']; ?>"
+                                       autofocus>
                             </div>
                             <div class="form-group">
-                                <input class="form-control" id="login_input_email" placeholder="E-mail" name="email"
-                                       type="email" autofocus>
+                                <input class="form-control" id="login_input_email" placeholder="E-mail"
+                                       name="user_email" type="email"
+                                       value="<?php if (isset($_POST['user_email'])) echo $_POST['user_email']; ?>">
                             </div>
                             <div class="form-group">
                                 <input class="form-control" id="login_input_password_new" placeholder="Password"

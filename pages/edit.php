@@ -25,9 +25,7 @@ if (isset($_POST['save'])) {
         && is_numeric($id)
         && !empty($product)
         && preg_match('/^[a-zA-Z\d]{0,64}$/i', $product)
-        && !empty($qty)
-        && is_numeric($qty)
-        && !empty($available))
+        && is_numeric($qty))
     {
         $sql = "UPDATE plants SET product = '$product', sown = '$sown', qty = '$qty', available = '$available' WHERE id='$id'";
         $result = mysqli_query($con, $sql);

@@ -22,7 +22,6 @@
                 if ($_SESSION['admin']) echo "<td>ID</td>";
                 echo '<td>Bed</td>
                     <td>Location</td>
-                    <td>Bed</td>
                     <td>Product</td>
                     <td>Sown</td>
                     <td>QTY</td>
@@ -36,9 +35,9 @@
                     if ($_SESSION['admin']) echo '<td>' . $row['id'] . '</td>';
                     echo '<td>' . $row['bed'] . '</td>
                         <td>' . $row['location'] . '</td>
-                        <td>' . $row['bed'] . '</td>
                         <td>' . $row['product'] . '</td>
-                        <td>' . $row['sown'] . '</td>
+                        <td>'; if ($row['sown'] <> '0000-00-00') echo $row['sown'];
+                    echo '</td>
                         <td>' . $row['qty'] . '</td>
                         <td>' . $row['available'] . '</td>
                         <td><a href="edit.php?id=' . $row['id'] . '">Edit</a> | <a href="notes.php?id=' . $row['id'] . '">Notes</a></td>

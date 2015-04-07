@@ -12,6 +12,7 @@ require_once("classes/Login.php");
 $login = new Login();
 
 $page = 'pages/newplant.php';
+$title = 'Add Plant';
 
 // ... ask if we are logged in here:
 if ($login->isUserLoggedIn() === true) {

@@ -11,7 +11,8 @@ require_once("classes/Login.php");
 // so this single line handles the entire login process. in consequence, you can simply ...
 $login = new Login();
 
-$page = 'pages/edit.php';
+$page = 'pages/editplant.php';
+$title = 'Edit Plant';
 
 // ... ask if we are logged in here:
 if ($login->isUserLoggedIn() === true) {

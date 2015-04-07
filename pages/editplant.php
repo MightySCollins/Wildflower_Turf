@@ -57,7 +57,7 @@ if (isset($_POST['save'])) {
         <div class="col-lg-12">
             <h1 class="page-header">Edit Plant</h1>
             <?php if (isset($message)) echo $message ?>
-            <form method="post" action="edit.php" name="plantedit">
+            <form method="post" action="editplant.php" name="plantedit">
                 <fieldset>
                     <div class="form-group">
                         <div class="row">

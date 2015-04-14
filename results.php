@@ -11,7 +11,7 @@ require_once("classes/Login.php");
 // so this single line handles the entire login process. in consequence, you can simply ...
 $login = new Login();
 
-$page = 'pages/search.php';
+$page = 'pages/results.php';
 
 // ... ask if we are logged in here:
 if ($login->isUserLoggedIn() === true) {

@@ -46,10 +46,14 @@
                 }
             } else echo '<div class=\'alert alert-warning\'>No plants found</div>';
 
-            mysqli_close($con);
+
             ?>
             </tbody>
             </table>
+
+            <script src="../dist/js/page.js"></script>
+            <div id="pagination" cellspacing="0"></div>
+            <?php mysqli_close($con); ?>
 
         </div>
     </div>
